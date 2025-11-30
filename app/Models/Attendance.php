@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Services\CacheService;
 
 class Attendance extends Model
 {
@@ -22,6 +23,17 @@ class Attendance extends Model
         'marked_at' => 'datetime',
     ];
 
+    protected static function booted()
+    {
+        static::created(function () {
+            CacheService::clearDashboardCache();
+        });
+        
+        static::updated(function () {
+            CacheService::clearDashboardCache();
+        });
+    }
+
     public function classSession()
     {
         return $this->belongsTo(ClassSession::class);
@@ -35,5 +47,15 @@ class Attendance extends Model
     public function markedBy()
     {
         return $this->belongsTo(User::class, 'marked_by');
+    }
+
+    public function scopeByStatus($query, $status)
+    {
+        return $query->where('status', $status);
+    }
+
+    public function scopeByStudent($query, $studentId)
+    {
+        return $query->where('student_id', $studentId);
     }
 }

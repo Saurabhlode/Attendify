@@ -9,8 +9,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-xl border border-gray-200 dark:border-gray-700">
                 <div class="p-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                        <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 p-6 rounded-xl border border-blue-200 dark:border-blue-800">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 perspective-1000">
+                        <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 p-6 rounded-xl border border-blue-200 dark:border-blue-800 card-3d">
                             <div class="flex items-center justify-between">
                                 <div>
                                     <h3 class="text-sm font-medium text-blue-600 dark:text-blue-400">Total Users</h3>
@@ -23,7 +23,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 p-6 rounded-xl border border-green-200 dark:border-green-800">
+                        <div class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 p-6 rounded-xl border border-green-200 dark:border-green-800 card-3d">
                             <div class="flex items-center justify-between">
                                 <div>
                                     <h3 class="text-sm font-medium text-green-600 dark:text-green-400">Total Students</h3>
@@ -36,7 +36,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 p-6 rounded-xl border border-purple-200 dark:border-purple-800">
+                        <div class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 p-6 rounded-xl border border-purple-200 dark:border-purple-800 card-3d">
                             <div class="flex items-center justify-between">
                                 <div>
                                     <h3 class="text-sm font-medium text-purple-600 dark:text-purple-400">Total Teachers</h3>
@@ -49,7 +49,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20 p-6 rounded-xl border border-yellow-200 dark:border-yellow-800">
+                        <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20 p-6 rounded-xl border border-yellow-200 dark:border-yellow-800 card-3d">
                             <div class="flex items-center justify-between">
                                 <div>
                                     <h3 class="text-sm font-medium text-yellow-600 dark:text-yellow-400">Total Subjects</h3>
@@ -62,7 +62,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 p-6 rounded-xl border border-red-200 dark:border-red-800">
+                        <div class="bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 p-6 rounded-xl border border-red-200 dark:border-red-800 card-3d">
                             <div class="flex items-center justify-between">
                                 <div>
                                     <h3 class="text-sm font-medium text-red-600 dark:text-red-400">Total Sessions</h3>
@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-indigo-900/20 dark:to-indigo-800/20 p-6 rounded-xl border border-indigo-200 dark:border-indigo-800">
+                        <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-indigo-900/20 dark:to-indigo-800/20 p-6 rounded-xl border border-indigo-200 dark:border-indigo-800 card-3d">
                             <div class="flex items-center justify-between">
                                 <div>
                                     <h3 class="text-sm font-medium text-indigo-600 dark:text-indigo-400">Total Attendances</h3>
@@ -92,8 +92,8 @@
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <!-- Quick Actions -->
-                        <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <a href="{{ route('admin.users') }}" class="group block p-6 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl shadow-sm hover:shadow-lg hover:border-primary-300 dark:hover:border-primary-600 transition-all duration-200">
+                        <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 perspective-500">
+                            <a href="{{ route('admin.users') }}" class="group block p-6 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl shadow-sm hover:shadow-lg hover:border-primary-300 dark:hover:border-primary-600 interactive-card">
                                 <div class="flex items-center space-x-4">
                                     <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center group-hover:bg-primary-200 dark:group-hover:bg-primary-800/50 transition-colors">
                                         <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="currentColor" viewBox="0 0 20 20">
@@ -106,7 +106,7 @@
                                     </div>
                                 </div>
                             </a>
-                            <a href="{{ route('admin.subjects') }}" class="group block p-6 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl shadow-sm hover:shadow-lg hover:border-primary-300 dark:hover:border-primary-600 transition-all duration-200">
+                            <a href="{{ route('admin.subjects') }}" class="group block p-6 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl shadow-sm hover:shadow-lg hover:border-primary-300 dark:hover:border-primary-600 interactive-card">
                                 <div class="flex items-center space-x-4">
                                     <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center group-hover:bg-primary-200 dark:group-hover:bg-primary-800/50 transition-colors">
                                         <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="currentColor" viewBox="0 0 20 20">
@@ -119,7 +119,7 @@
                                     </div>
                                 </div>
                             </a>
-                            <a href="{{ route('admin.terms') }}" class="group block p-6 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl shadow-sm hover:shadow-lg hover:border-primary-300 dark:hover:border-primary-600 transition-all duration-200">
+                            <a href="{{ route('admin.terms') }}" class="group block p-6 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl shadow-sm hover:shadow-lg hover:border-primary-300 dark:hover:border-primary-600 interactive-card">
                                 <div class="flex items-center space-x-4">
                                     <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center group-hover:bg-primary-200 dark:group-hover:bg-primary-800/50 transition-colors">
                                         <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="currentColor" viewBox="0 0 20 20">
@@ -132,7 +132,7 @@
                                     </div>
                                 </div>
                             </a>
-                            <a href="{{ route('admin.reports.attendance') }}" class="group block p-6 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl shadow-sm hover:shadow-lg hover:border-primary-300 dark:hover:border-primary-600 transition-all duration-200">
+                            <a href="{{ route('admin.reports.attendance') }}" class="group block p-6 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl shadow-sm hover:shadow-lg hover:border-primary-300 dark:hover:border-primary-600 interactive-card">
                                 <div class="flex items-center space-x-4">
                                     <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center group-hover:bg-primary-200 dark:group-hover:bg-primary-800/50 transition-colors">
                                         <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="currentColor" viewBox="0 0 20 20">

@@ -23,6 +23,18 @@ class Subject extends Model
     protected $casts = [
         'meta' => 'array',
     ];
+    
+    protected static function booted()
+    {
+        static::created(function ($subject) {
+            \App\Services\CacheService::clearDashboardCache();
+        });
+        
+        static::updated(function ($subject) {
+            \App\Services\CacheService::clearDashboardCache();
+            \App\Services\CacheService::clearUserCache($subject->teacher_id);
+        });
+    }
 
     // teacher relation
     public function teacher()

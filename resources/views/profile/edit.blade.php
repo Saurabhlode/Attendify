@@ -10,9 +10,7 @@
             <!-- Profile Header -->
             <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-8 mb-8 border border-gray-200 dark:border-gray-700">
                 <div class="flex items-center space-x-6">
-                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">
-                        <span class="text-white font-bold text-2xl">{{ substr(auth()->user()->name, 0, 1) }}</span>
-                    </div>
+                    <x-logo size="xl" :showText="false" />
                     <div>
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white">{{ auth()->user()->name }}</h3>
                         <p class="text-gray-600 dark:text-gray-400">{{ auth()->user()->email }}</p>

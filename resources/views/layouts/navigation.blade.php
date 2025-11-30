@@ -5,28 +5,25 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="flex items-center space-x-2">
-                        <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
-                            <span class="text-white font-bold text-sm">A</span>
-                        </div>
-                        <span class="font-bold text-xl text-gray-900 dark:text-white">Attendify</span>
+                    <a href="{{ route('dashboard') }}" class="card-lift">
+                        <x-logo size="sm" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav-item">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     
                     @if(auth()->user()->role === 'Admin')
-                        <x-nav-link :href="route('admin.users')" :active="request()->routeIs('admin.users*')">
+                        <x-nav-link :href="route('admin.users')" :active="request()->routeIs('admin.users*')" class="nav-item">
                             {{ __('Users') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('admin.subjects')" :active="request()->routeIs('admin.subjects')">
+                        <x-nav-link :href="route('admin.subjects')" :active="request()->routeIs('admin.subjects')" class="nav-item">
                             {{ __('Subjects') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('admin.reports.attendance')" :active="request()->routeIs('admin.reports*')">
+                        <x-nav-link :href="route('admin.reports.attendance')" :active="request()->routeIs('admin.reports*')" class="nav-item">
                             {{ __('Reports') }}
                         </x-nav-link>
                     @elseif(auth()->user()->role === 'Teacher')

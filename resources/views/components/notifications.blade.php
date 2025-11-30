@@ -19,9 +19,7 @@
     
     <button @click="open = !open" 
             class="relative p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg transition-colors">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5-5v5zM4 4h7m0 0v7m0-7l-7 7"></path>
-        </svg>
+        <i class="fas fa-bell w-6 h-6 text-lg"></i>
         <span x-show="unreadCount > 0" 
               class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
               x-text="unreadCount"></span>

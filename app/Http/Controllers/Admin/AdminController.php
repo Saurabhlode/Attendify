@@ -9,30 +9,38 @@ use App\Models\Teacher;
 use App\Models\Subject;
 use App\Models\ClassSession;
 use App\Models\Attendance;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
     public function dashboard()
     {
-        $stats = [
-            'total_users' => User::count(),
-            'total_students' => Student::count(),
-            'total_teachers' => Teacher::count(),
-            'total_subjects' => Subject::count(),
-            'total_sessions' => ClassSession::count(),
-            'total_attendances' => Attendance::count(),
-        ];
+        // Cache stats for 2 minutes to prevent stale data
+        $stats = Cache::remember('admin.dashboard.stats', \App\Services\CacheService::DASHBOARD_TTL, function () {
+            return [
+                'total_users' => User::count(),
+                'total_students' => Student::count(),
+                'total_teachers' => Teacher::count(),
+                'total_subjects' => Subject::count(),
+                'total_sessions' => ClassSession::count(),
+                'total_attendances' => Attendance::count(),
+            ];
+        });
 
-        // Get attendance analytics
-        $attendanceStats = [
-            'present' => Attendance::where('status', 'present')->count(),
-            'late' => Attendance::where('status', 'late')->count(),
-            'absent' => Attendance::where('status', 'absent')->count(),
-        ];
+        // Cache attendance stats for 2 minutes
+        $attendanceStats = Cache::remember('admin.dashboard.attendance_stats', \App\Services\CacheService::DASHBOARD_TTL, function () {
+            return DB::table('attendances')
+                ->selectRaw('status, COUNT(*) as count')
+                ->groupBy('status')
+                ->pluck('count', 'status')
+                ->toArray() + ['present' => 0, 'late' => 0, 'absent' => 0];
+        });
         
-        // Get recent activity
-        $recentSessions = ClassSession::with(['subject', 'attendances'])
-            ->latest()
+        // Get recent activity with optimized query
+        $recentSessions = ClassSession::with(['subject:id,name', 'attendances:id,class_session_id,status'])
+            ->select('id', 'subject_id', 'date', 'start_time', 'end_time')
+            ->latest('date')
             ->take(5)
             ->get();
             
@@ -41,13 +49,17 @@ class AdminController extends Controller
 
     public function users()
     {
-        $users = User::with(['student', 'teacher'])->paginate(15);
+        $users = User::with(['student:id,user_id,roll_no', 'teacher:id,user_id,employee_code'])
+            ->select('id', 'name', 'email', 'role', 'created_at')
+            ->paginate(15);
         return view('admin.users.index', compact('users'));
     }
 
     public function subjects()
     {
-        $subjects = Subject::with('teacher.user')->paginate(15);
+        $subjects = Subject::with(['teacher:id,user_id', 'teacher.user:id,name'])
+            ->select('id', 'name', 'code', 'teacher_id', 'created_at')
+            ->paginate(15);
         return view('admin.subjects.index', compact('subjects'));
     }
 }
