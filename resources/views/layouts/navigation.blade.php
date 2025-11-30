@@ -17,11 +17,14 @@
                     </x-nav-link>
                     
                     @if(auth()->user()->role === 'Admin')
-                        <x-nav-link :href="route('admin.users')" :active="request()->routeIs('admin.users')">
+                        <x-nav-link :href="route('admin.users')" :active="request()->routeIs('admin.users*')">
                             {{ __('Users') }}
                         </x-nav-link>
                         <x-nav-link :href="route('admin.subjects')" :active="request()->routeIs('admin.subjects')">
                             {{ __('Subjects') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.reports.attendance')" :active="request()->routeIs('admin.reports*')">
+                            {{ __('Reports') }}
                         </x-nav-link>
                     @elseif(auth()->user()->role === 'Teacher')
                         <x-nav-link :href="route('teacher.subjects')" :active="request()->routeIs('teacher.subjects')">
@@ -95,11 +98,14 @@
             </x-responsive-nav-link>
             
             @if(auth()->user()->role === 'Admin')
-                <x-responsive-nav-link :href="route('admin.users')" :active="request()->routeIs('admin.users')">
+                <x-responsive-nav-link :href="route('admin.users')" :active="request()->routeIs('admin.users*')">
                     {{ __('Users') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('admin.subjects')" :active="request()->routeIs('admin.subjects')">
                     {{ __('Subjects') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.reports.attendance')" :active="request()->routeIs('admin.reports*')">
+                    {{ __('Reports') }}
                 </x-responsive-nav-link>
             @elseif(auth()->user()->role === 'Teacher')
                 <x-responsive-nav-link :href="route('teacher.subjects')" :active="request()->routeIs('teacher.subjects')">

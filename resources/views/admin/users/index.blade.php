@@ -9,6 +9,19 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-medium">All Users</h3>
+                        <div class="space-x-2">
+                            <a href="{{ route('admin.users.create') }}" 
+                               class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                                Create User
+                            </a>
+                            <a href="{{ route('admin.reports.attendance') }}" 
+                               class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                                Reports
+                            </a>
+                        </div>
+                    </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
