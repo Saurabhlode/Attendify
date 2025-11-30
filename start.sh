@@ -12,6 +12,7 @@ DB_CONNECTION=pgsql
 SESSION_DRIVER=database
 CACHE_STORE=database
 QUEUE_CONNECTION=database
+ASSET_URL=https://attendify-2-krca.onrender.com
 
 LOG_CHANNEL=stack
 LOG_LEVEL=debug
