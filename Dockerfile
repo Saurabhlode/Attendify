@@ -49,5 +49,9 @@ RUN echo 'opcache.enable=1' >> /usr/local/etc/php/conf.d/opcache.ini && \
 # Expose port (Render uses PORT env var)
 EXPOSE 8080
 
-# 100% reliable start command
-CMD ["/bin/sh", "-c", "php artisan migrate --force; php artisan db:seed --force || true; php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
+# Copy and make startup script executable
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
+# Use startup script
+CMD ["/app/start.sh"]
