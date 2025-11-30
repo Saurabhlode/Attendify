@@ -19,8 +19,7 @@ COPY . /app
 RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction --no-progress
 RUN npm install && npm run build
 
-# Generate Laravel key if not exists
-RUN php artisan key:generate --no-interaction || true
+# Don't copy .env - let Laravel use system environment variables
 
 # Create required directories and set permissions
 RUN mkdir -p /app/storage/logs /app/storage/framework/cache /app/storage/framework/sessions /app/storage/framework/views /app/bootstrap/cache
@@ -29,5 +28,5 @@ RUN chmod -R 775 /app/storage /app/bootstrap/cache
 # Expose port (Render uses PORT env var)
 EXPOSE 8080
 
-# Start command
-CMD php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
+# Start command - Laravel will use system environment variables
+CMD ["/bin/sh", "-c", "php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
