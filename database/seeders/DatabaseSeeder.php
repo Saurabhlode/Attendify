@@ -15,10 +15,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Only seed if no users exist
-        if (\App\Models\User::count() === 0) {
+        // Always run UserSeeder to ensure demo accounts exist
+        $this->call([
+            UserSeeder::class,
+        ]);
+        
+        // Only seed other data if no users existed before UserSeeder
+        if (\App\Models\User::count() <= 7) { // 7 users from UserSeeder
             $this->call([
-                UserSeeder::class,
                 SubjectSeeder::class,
                 ClassSessionSeeder::class,
                 AttendanceSeeder::class,
