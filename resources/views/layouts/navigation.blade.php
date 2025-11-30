@@ -49,6 +49,9 @@
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-4">
+                @auth
+                    <x-live-stats />
+                @endauth
                 <!-- Dark Mode Toggle -->
                 <button @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark', darkMode)" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                     <svg x-show="!darkMode" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

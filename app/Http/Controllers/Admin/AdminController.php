@@ -23,7 +23,20 @@ class AdminController extends Controller
             'total_attendances' => Attendance::count(),
         ];
 
-        return view('admin.dashboard', compact('stats'));
+        // Get attendance analytics
+        $attendanceStats = [
+            'present' => Attendance::where('status', 'present')->count(),
+            'late' => Attendance::where('status', 'late')->count(),
+            'absent' => Attendance::where('status', 'absent')->count(),
+        ];
+        
+        // Get recent activity
+        $recentSessions = ClassSession::with(['subject', 'attendances'])
+            ->latest()
+            ->take(5)
+            ->get();
+            
+        return view('admin.dashboard', compact('stats', 'attendanceStats', 'recentSessions'));
     }
 
     public function users()
