@@ -17,13 +17,13 @@ class RoleMiddleware
     {
         $user = $request->user();
         if (! $user) {
-            abort(Response::HTTP_FORBIDDEN);
+            return redirect()->route('login');
         }
 
         if (in_array($user->role, $roles)) {
             return $next($request);
         }
 
-        abort(Response::HTTP_FORBIDDEN);
+        return redirect()->route('dashboard')->with('error', 'Access denied');
     }
 }
