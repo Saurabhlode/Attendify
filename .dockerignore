@@ -16,3 +16,5 @@ README.md
 .editorconfig
 .gitignore
 .gitattributes
+public/build
+public/hot

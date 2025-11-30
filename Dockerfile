@@ -14,17 +14,19 @@ WORKDIR /app
 
 # Copy composer files first for better caching
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction --no-progress --no-scripts
+RUN --mount=type=cache,target=/root/.composer/cache \
+    composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction --no-progress --no-scripts
 
 # Copy package files for npm caching
 COPY package*.json ./
-RUN npm ci --only=production
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci
 
 # Copy source code
 COPY . /app
 
 # Run composer scripts and build assets
-RUN composer run-script post-autoload-dump && npm run build
+RUN composer run-script post-autoload-dump && npm run build && npm prune --production
 
 # Create minimal .env for caching commands
 RUN echo "APP_ENV=production" > .env && echo "DB_CONNECTION=pgsql" >> .env
