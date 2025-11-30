@@ -33,9 +33,12 @@ php artisan cache:clear || echo "Cache clear failed"
 echo "Testing database connection..."
 php artisan tinker --execute="try { DB::connection()->getPdo(); echo 'Database connected successfully'; } catch(Exception \$e) { echo 'Database error: ' . \$e->getMessage(); }" || echo "Database test failed"
 
-# Run migrations
-echo "Running database migrations..."
-php artisan migrate --force || echo "Migration failed"
+# Reset and run migrations fresh
+echo "Resetting database and running migrations..."
+php artisan migrate:fresh --force || {
+    echo "Fresh migration failed, trying regular migrate..."
+    php artisan migrate --force || echo "Migration failed"
+}
 
 # Check current user count
 echo "Checking current users..."
@@ -45,7 +48,10 @@ php artisan tinker --execute="echo 'User count: ' . App\Models\User::count();" |
 echo "Creating demo users..."
 php artisan db:seed --class=ProductionSeeder --force || {
     echo "ProductionSeeder failed, trying ForceUserSeeder..."
-    php artisan db:seed --class=ForceUserSeeder --force || echo "All seeding failed"
+    php artisan db:seed --class=ForceUserSeeder --force || {
+        echo "ForceUserSeeder failed, trying BasicUserSeeder..."
+        php artisan db:seed --class=BasicUserSeeder --force || echo "All seeding failed"
+    }
 }
 
 # Verify users were created
