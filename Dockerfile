@@ -26,10 +26,13 @@ COPY . /app
 # Run composer scripts and build assets
 RUN composer run-script post-autoload-dump && npm run build
 
+# Create minimal .env for caching commands
+RUN echo "APP_ENV=production" > .env && echo "DB_CONNECTION=pgsql" >> .env
+
 # Optimize Laravel for production
-RUN php artisan config:cache || true
-RUN php artisan route:cache || true
-RUN php artisan view:cache || true
+RUN php artisan config:cache
+RUN php artisan route:cache
+RUN php artisan view:cache
 
 # Create required directories and set permissions
 RUN mkdir -p /app/storage/logs /app/storage/framework/cache /app/storage/framework/sessions /app/storage/framework/views /app/bootstrap/cache
@@ -44,5 +47,5 @@ RUN echo 'opcache.enable=1' >> /usr/local/etc/php/conf.d/opcache.ini && \
 # Expose port (Render uses PORT env var)
 EXPOSE 8080
 
-# Start command with optimizations
-CMD ["/bin/sh", "-c", "php artisan migrate --force && (php artisan tinker --execute='echo App\\Models\\User::count();' | grep -q '^0$' && php artisan db:seed --force || echo 'Data exists, skipping seed') && php -d memory_limit=512M artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
+# 100% reliable start command
+CMD ["/bin/sh", "-c", "php artisan migrate --force; php artisan db:seed --force || true; php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]

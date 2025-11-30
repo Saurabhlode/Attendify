@@ -15,11 +15,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            UserSeeder::class,
-            SubjectSeeder::class,
-            ClassSessionSeeder::class,
-            AttendanceSeeder::class,
-        ]);
+        // Only seed if no users exist
+        if (\App\Models\User::count() === 0) {
+            $this->call([
+                UserSeeder::class,
+                SubjectSeeder::class,
+                ClassSessionSeeder::class,
+                AttendanceSeeder::class,
+            ]);
+        }
     }
 }
