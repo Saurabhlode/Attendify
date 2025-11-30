@@ -19,7 +19,10 @@ COPY . /app
 RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction --no-progress
 RUN npm install && npm run build
 
-# Don't copy .env - let Laravel use system environment variables
+# Create minimal .env for Laravel
+RUN echo "APP_ENV=production" > .env && \
+    echo "DB_CONNECTION=pgsql" >> .env && \
+    echo "APP_KEY=base64:ixs+AuINQiv7+pVevysg5yMaxXZ2H0kE6XXyaSfeG60=" >> .env
 
 # Create required directories and set permissions
 RUN mkdir -p /app/storage/logs /app/storage/framework/cache /app/storage/framework/sessions /app/storage/framework/views /app/bootstrap/cache
@@ -28,5 +31,5 @@ RUN chmod -R 775 /app/storage /app/bootstrap/cache
 # Expose port (Render uses PORT env var)
 EXPOSE 8080
 
-# Start command - Laravel will use system environment variables
-CMD ["/bin/sh", "-c", "php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
+# Start command with environment debug
+CMD ["/bin/sh", "-c", "echo 'DB_HOST='$DB_HOST && php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
