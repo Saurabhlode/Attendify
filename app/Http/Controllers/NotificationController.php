@@ -44,4 +44,21 @@ class NotificationController extends Controller
         
         return response()->json([]);
     }
+    
+    public function getNotifications()
+    {
+        $notifications = auth()->user()->notifications()->latest()->take(10)->get();
+        $unreadCount = auth()->user()->unreadNotifications()->count();
+        
+        return response()->json([
+            'notifications' => $notifications,
+            'unread_count' => $unreadCount
+        ]);
+    }
+    
+    public function markAllRead()
+    {
+        auth()->user()->unreadNotifications->markAsRead();
+        return response()->json(['success' => true]);
+    }
 }

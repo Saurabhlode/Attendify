@@ -60,6 +60,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/api/stats', [\App\Http\Controllers\NotificationController::class, 'getStats'])->name('api.stats');
+    Route::get('/api/notifications', [\App\Http\Controllers\NotificationController::class, 'getNotifications'])->name('api.notifications');
+    Route::post('/api/notifications/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllRead'])->name('api.notifications.mark-read');
 });
 
 require __DIR__.'/auth.php';

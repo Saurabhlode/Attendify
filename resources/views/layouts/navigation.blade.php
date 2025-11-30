@@ -50,6 +50,7 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-4">
                 @auth
+                    <x-notifications />
                     <x-live-stats />
                 @endauth
                 <!-- Dark Mode Toggle -->
