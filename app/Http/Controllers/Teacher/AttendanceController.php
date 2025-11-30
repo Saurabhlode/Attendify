@@ -42,12 +42,18 @@ class AttendanceController extends Controller
         ]);
 
         foreach ($request->attendance as $studentId => $status) {
-            Attendance::create([
+            $attendance = Attendance::create([
                 'class_session_id' => $session->id,
                 'student_id' => $studentId,
                 'status' => $status,
                 'marked_by' => auth()->id(),
             ]);
+            
+            // Send notification to student
+            $student = \App\Models\Student::find($studentId);
+            if ($student && $student->user) {
+                $student->user->notify(new \App\Notifications\AttendanceMarked($attendance));
+            }
         }
 
         return redirect()->route('teacher.sessions')->with('success', 'Attendance marked successfully');

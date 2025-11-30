@@ -33,9 +33,11 @@ class Teacher extends Model
         return $this->hasMany(Subject::class, 'teacher_id');
     }
 
-    // convenience to get roster via subject -> students
+    // Get all students enrolled in teacher's subjects
     public function students()
     {
-        return $this->hasManyThrough(Student::class, Subject::class, 'teacher_id', 'id', 'id', 'id');
+        return Student::whereHas('subjects', function($query) {
+            $query->where('teacher_id', $this->id);
+        });
     }    
 }

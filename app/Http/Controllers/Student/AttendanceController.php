@@ -22,12 +22,15 @@ class AttendanceController extends Controller
             return back()->with('error', 'Attendance already marked');
         }
 
-        Attendance::create([
+        $attendance = Attendance::create([
             'class_session_id' => $session->id,
             'student_id' => $student->id,
             'status' => 'present',
             'marked_by' => auth()->id(),
         ]);
+        
+        // Send notification to student
+        auth()->user()->notify(new \App\Notifications\AttendanceMarked($attendance));
 
         return back()->with('success', 'Attendance marked as present');
     }
