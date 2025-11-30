@@ -19,7 +19,7 @@ class ProductionSeeder extends Seeder
     {
         $this->command->info('🚀 Creating comprehensive demo data for Attendify...');
         
-        // 1. Create Academic Term
+        // 1. Create Academic Term (for future use)
         $term = AcademicTerm::updateOrCreate(
             ['name' => 'Fall 2024'],
             [
@@ -88,7 +88,7 @@ class ProductionSeeder extends Seeder
         }
         $this->command->info('✓ Teachers created: 3 teachers');
 
-        // 4. Create Students
+        // 4. Create Students (12 students for more data)
         $students = [
             ['name' => 'Alice Johnson', 'email' => 'alice@attendify.com', 'roll_no' => 'CS2024001', 'class' => 'CS-A'],
             ['name' => 'Bob Wilson', 'email' => 'bob@attendify.com', 'roll_no' => 'CS2024002', 'class' => 'CS-A'],
@@ -98,6 +98,10 @@ class ProductionSeeder extends Seeder
             ['name' => 'Frank Martinez', 'email' => 'frank@attendify.com', 'roll_no' => 'CS2024006', 'class' => 'CS-B'],
             ['name' => 'Grace Lee', 'email' => 'grace@attendify.com', 'roll_no' => 'CS2024007', 'class' => 'CS-A'],
             ['name' => 'Henry Taylor', 'email' => 'henry@attendify.com', 'roll_no' => 'CS2024008', 'class' => 'CS-A'],
+            ['name' => 'Ivy Chen', 'email' => 'ivy@attendify.com', 'roll_no' => 'CS2024009', 'class' => 'CS-A'],
+            ['name' => 'Jack Robinson', 'email' => 'jack@attendify.com', 'roll_no' => 'CS2024010', 'class' => 'CS-B'],
+            ['name' => 'Kate Anderson', 'email' => 'kate@attendify.com', 'roll_no' => 'CS2024011', 'class' => 'CS-B'],
+            ['name' => 'Liam Thompson', 'email' => 'liam@attendify.com', 'roll_no' => 'CS2024012', 'class' => 'CS-A'],
         ];
 
         $studentModels = [];
@@ -121,14 +125,14 @@ class ProductionSeeder extends Seeder
                 ]
             );
         }
-        $this->command->info('✓ Students created: 8 students');
+        $this->command->info('✓ Students created: 12 students');
 
         // 5. Create Subjects
         $subjects = [
             [
                 'code' => 'CS101',
                 'name' => 'Introduction to Programming',
-                'teacher_id' => $teacherModels[0]->id,
+                'teacher_id' => $teacherModels[0]->id ?? null,
                 'semester' => 'Fall 2024',
                 'credits' => 4,
                 'description' => 'Fundamentals of programming using Python',
@@ -136,7 +140,7 @@ class ProductionSeeder extends Seeder
             [
                 'code' => 'MATH201',
                 'name' => 'Discrete Mathematics',
-                'teacher_id' => $teacherModels[1]->id,
+                'teacher_id' => $teacherModels[1]->id ?? null,
                 'semester' => 'Fall 2024',
                 'credits' => 3,
                 'description' => 'Mathematical foundations for computer science',
@@ -144,7 +148,7 @@ class ProductionSeeder extends Seeder
             [
                 'code' => 'PHY101',
                 'name' => 'Physics for Engineers',
-                'teacher_id' => $teacherModels[2]->id,
+                'teacher_id' => $teacherModels[2]->id ?? null,
                 'semester' => 'Fall 2024',
                 'credits' => 3,
                 'description' => 'Basic physics concepts for engineering students',
@@ -152,7 +156,7 @@ class ProductionSeeder extends Seeder
             [
                 'code' => 'CS201',
                 'name' => 'Data Structures & Algorithms',
-                'teacher_id' => $teacherModels[0]->id,
+                'teacher_id' => $teacherModels[0]->id ?? null,
                 'semester' => 'Fall 2024',
                 'credits' => 4,
                 'description' => 'Advanced programming concepts and algorithms',
@@ -183,18 +187,17 @@ class ProductionSeeder extends Seeder
         }
         $this->command->info('✓ Student enrollments completed');
 
-        // 7. Create Class Sessions (last 30 days)
+        // 7. Create Class Sessions (last 60 days for more data)
         $sessions = [];
         foreach ($subjectModels as $subject) {
-            // Create 3 sessions per week for each subject
-            for ($i = 0; $i < 12; $i++) {
-                $date = now()->subDays(rand(1, 30));
+            // Create 20 sessions per subject over 60 days
+            for ($i = 0; $i < 20; $i++) {
+                $sessionDate = now()->subDays(rand(1, 60));
                 $sessions[] = ClassSession::create([
                     'subject_id' => $subject->id,
-                    'academic_term_id' => $term->id,
-                    'session_date' => $date->format('Y-m-d'),
-                    'start_time' => $date->setTime(9 + ($i % 4), 0)->format('H:i:s'),
-                    'end_time' => $date->setTime(10 + ($i % 4), 30)->format('H:i:s'),
+                    'date' => $sessionDate->format('Y-m-d'),
+                    'start_time' => sprintf('%02d:00:00', 9 + ($i % 6)),
+                    'end_time' => sprintf('%02d:30:00', 10 + ($i % 6)),
                     'topic' => 'Session ' . ($i + 1) . ' - ' . $subject->name,
                     'session_type' => ['lecture', 'lab', 'tutorial'][rand(0, 2)],
                 ]);
@@ -202,26 +205,51 @@ class ProductionSeeder extends Seeder
         }
         $this->command->info('✓ Class sessions created: ' . count($sessions) . ' sessions');
 
-        // 8. Create Attendance Records
+        // 8. Create Attendance Records (targeting 400+ records)
         $attendanceCount = 0;
         foreach ($sessions as $session) {
             $subject = Subject::find($session->subject_id);
             $enrolledStudents = $subject->students;
             
             foreach ($enrolledStudents as $student) {
-                // 85% attendance rate with realistic patterns
+                // Varied attendance patterns for realistic data
+                $dayOfWeek = Carbon::parse($session->date)->dayOfWeek;
+                $isMonday = $dayOfWeek === 1;
+                $isFriday = $dayOfWeek === 5;
+                
                 $status = 'present';
                 $random = rand(1, 100);
-                if ($random <= 10) $status = 'absent';
-                elseif ($random <= 15) $status = 'late';
+                
+                // Monday: Higher absence rate (post-weekend)
+                if ($isMonday) {
+                    if ($random <= 15) $status = 'absent';
+                    elseif ($random <= 25) $status = 'late';
+                } 
+                // Friday: Moderate absence rate
+                elseif ($isFriday) {
+                    if ($random <= 12) $status = 'absent';
+                    elseif ($random <= 20) $status = 'late';
+                } 
+                // Regular days: Normal attendance
+                else {
+                    if ($random <= 8) $status = 'absent';
+                    elseif ($random <= 15) $status = 'late';
+                }
+                
+                $remarks = null;
+                if ($status === 'late') {
+                    $remarks = ['Arrived 5 minutes late', 'Arrived 10 minutes late', 'Traffic delay', 'Bus was late'][rand(0, 3)];
+                } elseif ($status === 'absent') {
+                    $remarks = rand(1, 100) <= 30 ? ['Sick leave', 'Family emergency', 'Medical appointment'][rand(0, 2)] : null;
+                }
                 
                 Attendance::create([
                     'class_session_id' => $session->id,
                     'student_id' => $student->id,
                     'status' => $status,
                     'marked_by' => $subject->teacher->user_id,
-                    'marked_at' => $session->created_at->addMinutes(rand(5, 15)),
-                    'remarks' => $status === 'late' ? 'Arrived 10 minutes late' : null,
+                    'marked_at' => Carbon::parse($session->date)->addHours(9 + ($session->id % 6))->addMinutes(rand(5, 15)),
+                    'remarks' => $remarks,
                 ]);
                 $attendanceCount++;
             }
@@ -234,7 +262,7 @@ class ProductionSeeder extends Seeder
         $this->command->info('📊 Summary:');
         $this->command->info('   • 1 Admin user');
         $this->command->info('   • 3 Teachers');
-        $this->command->info('   • 8 Students');
+        $this->command->info('   • 12 Students');
         $this->command->info('   • 4 Subjects');
         $this->command->info('   • 1 Academic term');
         $this->command->info('   • ' . count($sessions) . ' Class sessions');

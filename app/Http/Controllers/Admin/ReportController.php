@@ -12,13 +12,18 @@ class ReportController extends Controller
     public function attendance(Request $request)
     {
         $subjects = Subject::all();
-        $attendances = collect();
-
+        
+        // Build the query
+        $query = Attendance::with(['student.user', 'classSession.subject', 'markedBy']);
+        
+        // Filter by subject if specified
         if ($request->subject_id) {
-            $attendances = Attendance::whereHas('classSession', function($q) use ($request) {
+            $query->whereHas('classSession', function($q) use ($request) {
                 $q->where('subject_id', $request->subject_id);
-            })->with(['student.user', 'classSession'])->get();
+            });
         }
+        
+        $attendances = $query->orderBy('created_at', 'desc')->get();
 
         return view('admin.reports.attendance', compact('subjects', 'attendances'));
     }
