@@ -46,10 +46,10 @@ php artisan tinker --execute="echo 'User count: ' . App\Models\User::count();" |
 
 # Seed demo users for production
 echo "Creating demo users..."
-php artisan db:seed --class=ProductionSeeder --force || {
-    echo "ProductionSeeder failed, trying ForceUserSeeder..."
-    php artisan db:seed --class=ForceUserSeeder --force || {
-        echo "ForceUserSeeder failed, trying BasicUserSeeder..."
+php artisan db:seed --class=FixedProductionSeeder --force || {
+    echo "FixedProductionSeeder failed, trying ProductionSeeder..."
+    php artisan db:seed --class=ProductionSeeder --force || {
+        echo "ProductionSeeder failed, trying BasicUserSeeder..."
         php artisan db:seed --class=BasicUserSeeder --force || echo "All seeding failed"
     }
 }

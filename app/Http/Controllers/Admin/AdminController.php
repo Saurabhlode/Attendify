@@ -20,8 +20,8 @@ class AdminController extends Controller
         $stats = Cache::remember('admin.dashboard.stats', \App\Services\CacheService::DASHBOARD_TTL, function () {
             return [
                 'total_users' => User::count(),
-                'total_students' => Student::count(),
-                'total_teachers' => Teacher::count(),
+                'total_students' => User::where('role', 'Student')->count(),
+                'total_teachers' => User::where('role', 'Teacher')->count(),
                 'total_subjects' => Subject::count(),
                 'total_sessions' => ClassSession::count(),
                 'total_attendances' => Attendance::count(),
