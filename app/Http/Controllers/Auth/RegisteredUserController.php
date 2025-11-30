@@ -44,19 +44,23 @@ class RegisteredUserController extends Controller
         ]);
 
         // Create role-specific record
-        if ($request->role === 'Student') {
-            \App\Models\Student::create([
-                'user_id' => $user->id,
-                'roll_no' => 'S' . str_pad($user->id, 3, '0', STR_PAD_LEFT),
-                'enrollment_year' => date('Y'),
-                'program' => 'General',
-            ]);
-        } elseif ($request->role === 'Teacher') {
-            \App\Models\Teacher::create([
-                'user_id' => $user->id,
-                'employee_code' => 'T' . str_pad($user->id, 3, '0', STR_PAD_LEFT),
-                'department' => 'General',
-            ]);
+        try {
+            if ($request->role === 'Student') {
+                \App\Models\Student::create([
+                    'user_id' => $user->id,
+                    'roll_no' => 'S' . str_pad($user->id, 3, '0', STR_PAD_LEFT),
+                    'enrollment_year' => date('Y'),
+                    'program' => 'General',
+                ]);
+            } elseif ($request->role === 'Teacher') {
+                \App\Models\Teacher::create([
+                    'user_id' => $user->id,
+                    'employee_code' => 'T' . str_pad($user->id, 3, '0', STR_PAD_LEFT),
+                    'department' => 'General',
+                ]);
+            }
+        } catch (\Exception $e) {
+            \Log::error('Role record creation failed: ' . $e->getMessage());
         }
 
         event(new Registered($user));
