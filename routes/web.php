@@ -23,11 +23,17 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/users', [AdminController::class, 'users'])->name('users');
     Route::get('/users/create', [\App\Http\Controllers\Admin\UserController::class, 'create'])->name('users.create');
     Route::post('/users', [\App\Http\Controllers\Admin\UserController::class, 'store'])->name('users.store');
+    Route::get('/users/{user}/edit', [\App\Http\Controllers\Admin\UserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
     Route::get('/subjects', [AdminController::class, 'subjects'])->name('subjects');
     Route::get('/subjects/create', [\App\Http\Controllers\Admin\SubjectController::class, 'create'])->name('subjects.create');
     Route::post('/subjects', [\App\Http\Controllers\Admin\SubjectController::class, 'store'])->name('subjects.store');
     Route::get('/subjects/{subject}/enroll', [\App\Http\Controllers\Admin\SubjectController::class, 'enroll'])->name('subjects.enroll');
     Route::post('/subjects/{subject}/enroll', [\App\Http\Controllers\Admin\SubjectController::class, 'updateEnrollment'])->name('subjects.enrollment');
+    Route::get('/subjects/{subject}/edit', [\App\Http\Controllers\Admin\SubjectController::class, 'edit'])->name('subjects.edit');
+    Route::put('/subjects/{subject}', [\App\Http\Controllers\Admin\SubjectController::class, 'update'])->name('subjects.update');
+    Route::delete('/subjects/{subject}', [\App\Http\Controllers\Admin\SubjectController::class, 'destroy'])->name('subjects.destroy');
     Route::get('/terms', [\App\Http\Controllers\Admin\AcademicTermController::class, 'index'])->name('terms');
     Route::get('/terms/create', [\App\Http\Controllers\Admin\AcademicTermController::class, 'create'])->name('terms.create');
     Route::post('/terms', [\App\Http\Controllers\Admin\AcademicTermController::class, 'store'])->name('terms.store');

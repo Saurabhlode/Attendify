@@ -53,8 +53,15 @@
                                             {{ $subject->credits }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            <a href="{{ route('admin.subjects.enroll', $subject) }}" 
-                                               class="text-blue-600 hover:text-blue-900">Manage Enrollment</a>
+                                            <div class="flex space-x-2">
+                                                <a href="{{ route('admin.subjects.edit', $subject) }}" class="text-blue-600 hover:text-blue-900">Edit</a>
+                                                <a href="{{ route('admin.subjects.enroll', $subject) }}" class="text-green-600 hover:text-green-900">Enroll</a>
+                                                <form method="POST" action="{{ route('admin.subjects.destroy', $subject) }}" class="inline">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit" class="text-red-600 hover:text-red-900" 
+                                                            onclick="return confirm('Delete this subject?')">Delete</button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

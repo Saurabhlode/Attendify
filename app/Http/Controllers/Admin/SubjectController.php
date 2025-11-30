@@ -41,4 +41,29 @@ class SubjectController extends Controller
         $subject->students()->sync($request->students ?? []);
         return redirect()->route('admin.subjects')->with('success', 'Enrollment updated successfully');
     }
+
+    public function edit(Subject $subject)
+    {
+        $teachers = Teacher::with('user')->get();
+        return view('admin.subjects.edit', compact('subject', 'teachers'));
+    }
+
+    public function update(Request $request, Subject $subject)
+    {
+        $request->validate([
+            'code' => 'required|unique:subjects,code,' . $subject->id,
+            'name' => 'required',
+            'teacher_id' => 'nullable|exists:teachers,id',
+            'credits' => 'required|integer|min:1',
+        ]);
+
+        $subject->update($request->all());
+        return redirect()->route('admin.subjects')->with('success', 'Subject updated successfully');
+    }
+
+    public function destroy(Subject $subject)
+    {
+        $subject->delete();
+        return redirect()->route('admin.subjects')->with('success', 'Subject deleted successfully');
+    }
 }
