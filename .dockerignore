@@ -9,3 +9,10 @@ storage/framework/views/*
 bootstrap/cache/*
 vendor
 .phpunit.result.cache
+tests
+.github
+README.md
+*.md
+.editorconfig
+.gitignore
+.gitattributes
