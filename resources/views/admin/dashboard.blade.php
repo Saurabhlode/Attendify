@@ -36,14 +36,22 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <a href="{{ route('admin.users') }}" class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100">
-                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Manage Users</h5>
-                            <p class="font-normal text-gray-700">View and manage all users in the system</p>
+                            <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900">Manage Users</h5>
+                            <p class="font-normal text-gray-700">Create and manage users</p>
                         </a>
                         <a href="{{ route('admin.subjects') }}" class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100">
-                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Manage Subjects</h5>
-                            <p class="font-normal text-gray-700">View and manage all subjects</p>
+                            <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900">Manage Subjects</h5>
+                            <p class="font-normal text-gray-700">Create subjects and enrollments</p>
+                        </a>
+                        <a href="{{ route('admin.terms') }}" class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100">
+                            <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900">Academic Terms</h5>
+                            <p class="font-normal text-gray-700">Manage academic terms</p>
+                        </a>
+                        <a href="{{ route('admin.reports.attendance') }}" class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100">
+                            <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900">Attendance Reports</h5>
+                            <p class="font-normal text-gray-700">View and export reports</p>
                         </a>
                     </div>
                 </div>

@@ -24,6 +24,13 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/users/create', [\App\Http\Controllers\Admin\UserController::class, 'create'])->name('users.create');
     Route::post('/users', [\App\Http\Controllers\Admin\UserController::class, 'store'])->name('users.store');
     Route::get('/subjects', [AdminController::class, 'subjects'])->name('subjects');
+    Route::get('/subjects/create', [\App\Http\Controllers\Admin\SubjectController::class, 'create'])->name('subjects.create');
+    Route::post('/subjects', [\App\Http\Controllers\Admin\SubjectController::class, 'store'])->name('subjects.store');
+    Route::get('/subjects/{subject}/enroll', [\App\Http\Controllers\Admin\SubjectController::class, 'enroll'])->name('subjects.enroll');
+    Route::post('/subjects/{subject}/enroll', [\App\Http\Controllers\Admin\SubjectController::class, 'updateEnrollment'])->name('subjects.enrollment');
+    Route::get('/terms', [\App\Http\Controllers\Admin\AcademicTermController::class, 'index'])->name('terms');
+    Route::get('/terms/create', [\App\Http\Controllers\Admin\AcademicTermController::class, 'create'])->name('terms.create');
+    Route::post('/terms', [\App\Http\Controllers\Admin\AcademicTermController::class, 'store'])->name('terms.store');
     Route::get('/reports/attendance', [\App\Http\Controllers\Admin\ReportController::class, 'attendance'])->name('reports.attendance');
     Route::get('/reports/export', [\App\Http\Controllers\Admin\ReportController::class, 'exportAttendance'])->name('reports.export');
 });
