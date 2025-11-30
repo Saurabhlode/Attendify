@@ -37,9 +37,20 @@ php artisan tinker --execute="try { DB::connection()->getPdo(); echo 'Database c
 echo "Running database migrations..."
 php artisan migrate --force || echo "Migration failed"
 
+# Check current user count
+echo "Checking current users..."
+php artisan tinker --execute="echo 'User count: ' . App\Models\User::count();" || echo "User count check failed"
+
 # Seed demo users for production
 echo "Creating demo users..."
-php artisan db:seed --class=ProductionSeeder --force || echo "Seeding failed"
+php artisan db:seed --class=ProductionSeeder --force || {
+    echo "ProductionSeeder failed, trying ForceUserSeeder..."
+    php artisan db:seed --class=ForceUserSeeder --force || echo "All seeding failed"
+}
+
+# Verify users were created
+echo "Verifying demo users..."
+php artisan tinker --execute="echo 'Final user count: ' . App\Models\User::count(); echo 'Admin exists: ' . (App\Models\User::where('email', 'admin@attendify.com')->exists() ? 'YES' : 'NO');" || echo "User verification failed"
 
 # Optimize for production
 echo "Optimizing for production..."
