@@ -11,7 +11,7 @@ Route::get('/', function () {
     if (auth()->check()) {
         return redirect()->route('dashboard');
     }
-    return view('auth.login');
+    return view('welcome');
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
