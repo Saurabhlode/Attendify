@@ -19,11 +19,15 @@ COPY . /app
 RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction --no-progress
 RUN npm install && npm run build
 
-# Set permissions
-RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache || true
+# Generate Laravel key if not exists
+RUN php artisan key:generate --no-interaction || true
 
-# Expose port
-EXPOSE $PORT
+# Create required directories and set permissions
+RUN mkdir -p /app/storage/logs /app/storage/framework/cache /app/storage/framework/sessions /app/storage/framework/views /app/bootstrap/cache
+RUN chmod -R 775 /app/storage /app/bootstrap/cache
+
+# Expose port (Render uses PORT env var)
+EXPOSE 8080
 
 # Start command
-CMD ["sh", "-c", "php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
+CMD php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
