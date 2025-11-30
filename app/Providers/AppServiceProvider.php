@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
         
         // Trust all proxies for proper HTTPS detection
         if (config('app.env') === 'production') {
-            request()->setTrustedProxies(['*'], \Illuminate\Http\Request::HEADER_X_FORWARDED_ALL);
+            request()->setTrustedProxies(['*'], Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO);
         }
     }
 }
