@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Subject;
 use App\Models\ClassSession;
 use App\Models\Attendance;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Cache;
 
 class TeacherController extends Controller
 {
@@ -15,13 +13,10 @@ class TeacherController extends Controller
     {
         $teacher = auth()->user()->teacher;
         
-        // Cache teacher subjects for 5 minutes
-        $subjects = Cache::remember("teacher.{$teacher->id}.subjects", \App\Services\CacheService::USER_DATA_TTL, function () use ($teacher) {
-            return $teacher->subjects()
-                ->withCount('students')
-                ->select('id', 'name', 'code', 'teacher_id')
-                ->get();
-        });
+        $subjects = $teacher->subjects()
+            ->withCount('students')
+            ->select('id', 'name', 'code', 'teacher_id')
+            ->get();
         
         return view('teacher.dashboard', compact('subjects'));
     }

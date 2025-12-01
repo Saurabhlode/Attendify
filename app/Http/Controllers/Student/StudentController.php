@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Student;
 use App\Http\Controllers\Controller;
 use App\Models\Subject;
 use App\Models\Attendance;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Cache;
 
 class StudentController extends Controller
 {
@@ -14,13 +12,10 @@ class StudentController extends Controller
     {
         $student = auth()->user()->student;
         
-        // Cache student subjects for 5 minutes
-        $subjects = Cache::remember("student.{$student->id}.subjects", \App\Services\CacheService::USER_DATA_TTL, function () use ($student) {
-            return $student->subjects()
-                ->with(['teacher:id,user_id', 'teacher.user:id,name'])
-                ->select('subjects.id', 'subjects.name', 'subjects.code', 'subjects.teacher_id')
-                ->get();
-        });
+        $subjects = $student->subjects()
+            ->with(['teacher:id,user_id', 'teacher.user:id,name'])
+            ->select('subjects.id', 'subjects.name', 'subjects.code', 'subjects.teacher_id')
+            ->get();
         
         return view('student.dashboard', compact('subjects'));
     }

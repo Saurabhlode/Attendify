@@ -9,33 +9,26 @@ use App\Models\Teacher;
 use App\Models\Subject;
 use App\Models\ClassSession;
 use App\Models\Attendance;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
     public function dashboard()
     {
-        // Cache stats for 2 minutes to prevent stale data
-        $stats = Cache::remember('admin.dashboard.stats', \App\Services\CacheService::DASHBOARD_TTL, function () {
-            return [
-                'total_users' => User::count(),
-                'total_students' => User::where('role', 'Student')->count(),
-                'total_teachers' => User::where('role', 'Teacher')->count(),
-                'total_subjects' => Subject::count(),
-                'total_sessions' => ClassSession::count(),
-                'total_attendances' => Attendance::count(),
-            ];
-        });
+        $stats = [
+            'total_users' => User::count(),
+            'total_students' => User::where('role', 'Student')->count(),
+            'total_teachers' => User::where('role', 'Teacher')->count(),
+            'total_subjects' => Subject::count(),
+            'total_sessions' => ClassSession::count(),
+            'total_attendances' => Attendance::count(),
+        ];
 
-        // Cache attendance stats for 2 minutes
-        $attendanceStats = Cache::remember('admin.dashboard.attendance_stats', \App\Services\CacheService::DASHBOARD_TTL, function () {
-            return DB::table('attendances')
-                ->selectRaw('status, COUNT(*) as count')
-                ->groupBy('status')
-                ->pluck('count', 'status')
-                ->toArray() + ['present' => 0, 'late' => 0, 'absent' => 0];
-        });
+        $attendanceStats = DB::table('attendances')
+            ->selectRaw('status, COUNT(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray() + ['present' => 0, 'late' => 0, 'absent' => 0];
         
         // Get recent activity with optimized query
         $recentSessions = ClassSession::with(['subject:id,name', 'attendances:id,class_session_id,status'])
